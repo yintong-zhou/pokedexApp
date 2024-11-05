@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokedexApp", "PokedexApp\PokedexApp.csproj", "{DDEA1968-9F52-4F26-80C4-23EB2924367D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokedexApp", "PokedexApp\PokedexApp.csproj", "{DDEA1968-9F52-4F26-80C4-23EB2924367D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

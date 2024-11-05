@@ -7,8 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Pokedex.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.5" PrivateAssets="all" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Pokedex.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Pokedex.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Pokedex.razor" />
   </ItemGroup>
 
 </Project>

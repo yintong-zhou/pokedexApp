@@ -1,7 +1,20 @@
 ﻿@page "/"
+@inject NavigationManager NavManager
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<button class="card card-pokedex text-bg-danger mb-4 rounded-4 grow" @onclick="ToPokedex">
+    <div class="card-body">
+        <h5 class="card-title display-5">
+            <i class="bi bi-record2"></i> Explore Pokèdex <span><i class="bi bi-record2"></i> </span>
+        </h5>
+        <p class="card-text">This is an encyclopedia that Pokémon Trainers carry with them to record data on the various species of Pokémon they encounter during their journey. </p>
+    </div>
+</button>
 
-Welcome to your new app.
+@code{
+    protected void ToPokedex()
+    {
+        NavManager.NavigateTo("/Pokedex");    
+    }
+}
