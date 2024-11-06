@@ -1,8 +1,25 @@
-﻿@page "/kanto"
+﻿@page "/pokedex/{pokedexNameOrId}"
 
 <h3>Kanto Monsters</h3>
 
 @code {
+    [Parameter]
+    public string pokedexNameOrId { get; set; }
 
+    private MyPokedex.Models.Pokedex pokedex;
+    private string dex;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        pokedex = await PokeApiService.GetPokedexAsync(pokedexNameOrId);
+    }
 }
 
+@if(pokedex == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h4>Pokedex: </h4>
+}
