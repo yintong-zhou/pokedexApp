@@ -27,6 +27,7 @@ namespace MyPokedex.Models
     {
         public int entry_number { get; set; }
         public PokemonSpecies pokemon_species { get; set; }
+        public string imgurl { get; set; }
     }
 
     public class PokemonSpecies
@@ -51,6 +52,7 @@ namespace MyPokedex.Models
         public List<PokemonEntry> pokemon_entries { get; set; }
         public Region region { get; set; }
         public List<VersionGroup> version_groups { get; set; }
+        public string imgurl { get; set; }
     }
 
     public class VersionGroup

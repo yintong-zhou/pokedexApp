@@ -62,7 +62,15 @@ public static class PokeApiService
         try
         {
             var response = await HttpClient.GetStringAsync($"pokedex/{nameOrId}");
-            return JsonSerializer.Deserialize<Pokedex>(response, options);
+            Pokedex pokedexData = JsonSerializer.Deserialize<Pokedex>(response);
+
+            //var tasks = pokedexData.pokemon_entries.Select(async pokemon =>
+            //{
+            //    var pokeResponse = await GetPokemonAsync(pokemon.pokemon_species.name);
+            //    pokemon.imgurl = pokeResponse.sprites.front_default;
+            //});
+            //await Task.WhenAll(tasks);
+            return pokedexData;
         }
         catch (Exception ex)
         {

@@ -1,16 +1,49 @@
 ﻿@page "/pokedex/{pokedexNameOrId}"
+@using MyPokedex.Models
 
-<h3>@pokedex.name.ToUpper() Creatures</h3>
+<div class="row sticky-top mb-2">
+    @if (images.Count < pokedex?.pokemon_entries.Count)
+    {
+        <button class="btn btn-dark" @onclick="LoadMoreImagesAsync">Load More @pokedex?.name.ToUpper() Creatures</button>
+    }
+</div>
 
 @code {
     [Parameter]
     public string pokedexNameOrId { get; set; }
-    private MyPokedex.Models.Pokedex pokedex;
-    int count = 0;
+    private Models.Pokedex pokedex;
+    private List<string> images = new List<string>();
+    private int loadedCount = 10; // Numero iniziale di Pokémon da caricare
+    private bool isLoading = false;
 
     protected override async Task OnParametersSetAsync()
     {
         pokedex = await PokeApiService.GetPokedexAsync(pokedexNameOrId);
+        if (pokedex != null)
+        {
+            await LoadMoreImagesAsync(); 
+        }
+    }
+
+    protected async Task<string> GetPokemonImage(string _pokemon)
+    {
+        var pokemon = await PokeApiService.GetPokemonAsync(_pokemon);
+        return pokemon.sprites.front_default;
+    }
+
+    protected async Task LoadMoreImagesAsync()
+    {
+        if (pokedex == null || isLoading) return;
+        isLoading = true;
+
+        var tasks = pokedex.pokemon_entries.Skip(images.Count).Take(loadedCount).Select(async item =>
+        {
+            var image = await GetPokemonImage(item.pokemon_species.name);
+            return image;
+        });
+
+        images.AddRange(await Task.WhenAll(tasks));
+        isLoading = false;
     }
 }
 
@@ -21,12 +54,12 @@
 else
 {
     <div class="row">
-
-        @foreach (var item in pokedex.pokemon_entries)
+        @for (int i = 0; i < images.Count; i++)
         {
-            <div class="col-12 col-md-4">
+            var item = pokedex.pokemon_entries[i];
+            <div class="col-12 col-sm-6 col-md-4 col-xl-2">
                 <div class="card m-1" style="width: 100%;">
-                    <img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_193036a4812%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_193036a4812%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.1953125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+                    <img class="card-img-top" src="@images[i]" alt="">
                     <div class="card-body">
                         <h5 class="card-title">N° @item.entry_number</h5>
                         <p class="card-text">@item.pokemon_species.name.ToUpper()</p>
